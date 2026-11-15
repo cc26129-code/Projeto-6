@@ -12,7 +12,7 @@ import java.util.List;
 
 public class RecursoDAO {
 
-    public int inserir(Recurso recurso) throws SQLException {
+    public boolean inserir(Recurso recurso) throws SQLException {
         String sql = "{call reserva.sp_inserir_recurso(?, ?, ?, ?)}";
 
         try (Connection conexao = ConexaoBD.conectar();
@@ -23,14 +23,8 @@ public class RecursoDAO {
             comando.setInt(3, recurso.getCapacidade());
             comando.setString(4, recurso.getLocalizacao());
 
-            try (ResultSet resultado = comando.executeQuery()) {
-                if (resultado.next()) {
-                    return resultado.getInt("id_recurso");
-                }
-            }
+            return executarDml(comando) > 0;
         }
-
-        throw new SQLException("A procedure nao retornou o ID do recurso inserido.");
     }
 
     public List<Recurso> listar() throws SQLException {
@@ -67,9 +61,7 @@ public class RecursoDAO {
             comando.setInt(4, recurso.getCapacidade());
             comando.setString(5, recurso.getLocalizacao());
 
-            try (ResultSet resultado = comando.executeQuery()) {
-                return resultado.next() && resultado.getInt("linhas_afetadas") > 0;
-            }
+            return executarDml(comando) > 0;
         }
     }
 
@@ -81,9 +73,31 @@ public class RecursoDAO {
 
             comando.setInt(1, idRecurso);
 
-            try (ResultSet resultado = comando.executeQuery()) {
-                return resultado.next() && resultado.getInt("linhas_afetadas") > 0;
-            }
+            return executarDml(comando) > 0;
         }
+    }
+
+    private int executarDml(CallableStatement comando) throws SQLException {
+        int linhasAfetadas = 0;
+        boolean temResultado = comando.execute();
+
+        while (true) {
+            if (temResultado) {
+                try (ResultSet resultado = comando.getResultSet()) {
+                    // As procedures de insercao, atualizacao e exclusao
+                    // nao retornam conjuntos de resultados.
+                }
+            } else {
+                int quantidade = comando.getUpdateCount();
+                if (quantidade == -1) {
+                    break;
+                }
+                linhasAfetadas += quantidade;
+            }
+
+            temResultado = comando.getMoreResults();
+        }
+
+        return linhasAfetadas;
     }
 }

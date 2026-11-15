@@ -10,20 +10,35 @@ Projeto acadêmico desenvolvido por Eduardo Moura e Francisco Braz.
 - Microsoft SQL Server
 
 ## Estrutura
-- `conexao`: conexão com o banco de dados.
-- `model`: classes de domínio.
+- `config`: configuracoes da aplicacao e do banco de dados.
+- `conexao`: abertura de conexoes JDBC.
+- `model`: classes de dominio.
 - `dao`: acesso a dados e chamadas às procedures.
-- `controller`: regras e coordenação da aplicação.
-- `view`: interfaces gráficas Swing.
+- `controller`: regras e coordenacao da aplicacao.
+- `view`: interfaces graficas Swing.
 
-## Configuração do banco
-A conexão será configurada por variáveis de ambiente, sem armazenar senhas no GitHub:
+## Configuracao do banco
 
-- `DB_URL`: URL JDBC completa do SQL Server.
-- `DB_USER`: usuário do banco.
-- `DB_PASSWORD`: senha do banco.
+A classe `br.com.projeto6.config.ConfiguracaoBD` centraliza os dados de conexao.
 
-Não envie credenciais, senhas ou tokens para o repositório.
+Por padrao, o projeto utiliza o servidor e banco de desenvolvimento:
+`regulus.cotuca.unicamp.br:1433 / DB26129`.
+
+Configure estas variaveis de ambiente na configuracao de execucao do IntelliJ:
+
+- `DB_USER`: usuario do SQL Server.
+- `DB_PASSWORD`: senha do SQL Server.
+- `DB_URL`: URL JDBC completa (opcional; se omitida, sera usada a URL padrao acima).
+
+Exemplo de URL:
+
+```
+jdbc:sqlserver://regulus.cotuca.unicamp.br:1433;databaseName=DB26129;encrypt=true;trustServerCertificate=true
+```
+
+Para trocar de servidor ou banco futuramente, basta alterar `DB_URL`. Para trocar o login, altere `DB_USER` e `DB_PASSWORD`.
+
+Nunca coloque usuario, senha ou outras credenciais diretamente no codigo ou no GitHub.
 
 ## Executar
-Abra o projeto pelo arquivo `pom.xml` no IntelliJ IDEA, aguarde o Maven carregar as dependências e execute a classe `br.com.projeto6.Main`.
+Abra o projeto pelo arquivo `pom.xml` no IntelliJ IDEA, aguarde o Maven carregar as dependencias e execute a classe `br.com.projeto6.Main`.

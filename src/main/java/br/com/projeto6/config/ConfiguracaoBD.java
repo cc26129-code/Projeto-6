@@ -11,7 +11,7 @@ public final class ConfiguracaoBD {
 
     private static final String URL_PADRAO =
             "jdbc:sqlserver://regulus.cotuca.unicamp.br:1433;"
-                    + "databaseName=DB26129;"
+                    + "databaseName=BD26129;"
                     + "encrypt=true;"
                     + "trustServerCertificate=true";
 

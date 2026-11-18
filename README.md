@@ -19,7 +19,7 @@ Projeto acadêmico desenvolvido por Eduardo Moura e Francisco Braz.
 
 ## Configuracao do banco
 
-A classe `br.com.projeto6.config.ConfiguracaoBD` centraliza os dados de conexao.
+A classe `br.com.projeto6.config.ConfiguracaoBD` centraliza os dados de conexao. acho que foi
 
 Por padrao, o projeto utiliza o servidor e banco de desenvolvimento:
 `regulus.cotuca.unicamp.br:1433 / BD26129`.
